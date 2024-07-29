@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container my-5">
+    <h1>Récapitulatif de la commande: </h1>
+
+    <div class ="row">
+
+        <div class="col-md-8">
+
+            <div class="bg-light p-3">
+                <strong>Contenu du panier</strong><br/>
+                {% for product in cart %}
+                    <div class ="row mt-2">
+                        <div class="col-md-2">
+                            <img src="/uploads/{{product.object.illustration}}" class="img-fluid" alt="{{product.object.name}}">
+                        </div>
+                        <div class="col-md-6"> 
+                            <strong>{{product.object.name}}</strong>
+                            <span class="d-block small">Prix unitaire: {{product.object.priceWt| price}}
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <span class="badge text-bg-secondary">x{{ product.qty }}</span>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>{{(product.qty*product.object.priceWt) | price}}</strong>
+                            </div>
+                        </div>
+                {%endfor%}
+            </div>  
+            
+            <div class="bg-light p-3 my-3">
+                <strong>Adresse de livraison: </strong> <br/>
+                <strong>{{choices.addresses.firstName}} {{choices.addresses.lastName}}</strong> <br/>
+                {{choices.addresses.address}} {{choices.addresses.secondaryAddress}} <br/>
+                {{choices.addresses.postal}}, {{choices.addresses.city}}<br/>
+                {{choices.addresses.country}}<br/>
+                {{choices.addresses.phone}}
+            </div>
+
+            <div class="bg-light p-3 my-3">
+                <strong>Transporteur: </strong> <br/>
+                <br/>
+                <strong>{{choices.carriers.name}}</strong> : <br/>
+                <em>{{choices.carriers.description}}</em> <br/> 
+            </div> 
+        </div>     
+
+        <div class="col-md-4">
+            <div class="bg-light p-3">
+                <div class= "d-flex justify-content-between">
+                    <span class="fw-bold">Total produits:</span>
+                    <span>{{fullCartQuantity}}</span>
+                </div>
+                <div class= "d-flex justify-content-between mt-3">
+                    <span class="fw-bold">Total Transporteur:</span>
+                    <span>{{choices.carriers.price | price}}</span>
+                </div>
+
+                <div class= "d-flex justify-content-between mt-3">
+                    <span class="fw-bold">Total Commande:</span>
+                    <span>{{ (totalWt + choices.carriers.price) |price }}</span>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-success w-100 mt-3">Valider la commande</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+</div>
+
+{% endblock %}
